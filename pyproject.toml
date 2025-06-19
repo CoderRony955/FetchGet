@@ -1,0 +1,20 @@
+[project]
+name = "FetchGet"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cython>=3.1.1",
+    "discord-py>=2.5.2",
+    "dnspython>=2.7.0",
+    "httpx>=0.28.1",
+    "psutil>=7.0.0",
+    "pyfiglet>=1.0.3",
+    "python-dotenv>=1.1.0",
+    "python-whois>=0.9.5",
+    "requests>=2.32.3",
+    "rich>=14.0.0",
+    "setuptools>=80.9.0",
+    "vt-py>=0.21.0",
+]
