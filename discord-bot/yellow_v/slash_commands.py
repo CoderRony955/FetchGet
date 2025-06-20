@@ -17,7 +17,7 @@ from datetime import datetime
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO,
-                    filename="log/discord_bots/discord_fetchget_y.log",
+                    filename="fetchget_y.log",
                     format='%(asctime)s %(message)s',
                     filemode='w')
 
