@@ -328,7 +328,7 @@ def setup(bot: commands.Bot):
 
             bot_avatar_url = bot.user.avatar.url if bot.user.avatar else bot.user.default_avatar.url
             embed = discord.Embed(
-                title="AsciiAce bot help",
+                title="FetchGet B1.0 bot help",
                 description=help_des,
                 color=discord.Color.blue()
             )
