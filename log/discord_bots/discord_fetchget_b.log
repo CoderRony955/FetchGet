@@ -1,4 +1,11 @@
-2025-06-19 13:39:27,902 PyNaCl is not installed, voice will NOT be supported
-2025-06-19 13:39:27,927 logging in using static token
-2025-06-19 13:39:29,830 Shard ID None has connected to Gateway (Session ID: 819dd7a1962bf3ee21e314adae8d6122).
-2025-06-19 13:39:32,038 Bot FetchGet_B has connected to Discord!
+2025-06-25 13:49:26,660 PyNaCl is not installed, voice will NOT be supported
+2025-06-25 13:49:27,263 Loading: slash_commands.delete
+2025-06-25 13:49:27,272 Loading: slash_commands.get
+2025-06-25 13:49:27,282 Loading: slash_commands.help
+2025-06-25 13:49:27,287 Loading: slash_commands.patch
+2025-06-25 13:49:27,294 Loading: slash_commands.post
+2025-06-25 13:49:27,305 Loading: slash_commands.put
+2025-06-25 13:49:27,311 logging in using static token
+2025-06-25 13:49:29,335 Shard ID None has connected to Gateway (Session ID: 7aa42facb76db79c4ef03b1f2d36a9f7).
+2025-06-25 13:49:31,466 Bot FetchGet_B has connected to Discord!
+2025-06-25 13:50:15,150 HTTP Request: POST https://httpbin.org/post "HTTP/1.1 200 OK"

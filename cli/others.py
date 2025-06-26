@@ -144,6 +144,7 @@ class patch_req:
         except (httpx.ProxyError, httpx.NetworkError, httpx.ConnectError, KeyboardInterrupt) as e:
             console.print(f"Network error: {e}", style="red")
             logger.error(f"Network error: {e}")
+
 # -----------------------------------------------------------------
 
 
@@ -317,12 +318,84 @@ async def abuse_ip_check(args):
 
             if response.status_code == 200:
                 decodedResponse = response.json().get("data", {})
-                
+
                 for key, value in decodedResponse.items():
                     console.print(f" {key} → {value}")
             else:
-                console.print(f" Error {response.status_code}: {response.text}")
+                console.print(
+                    f" Error {response.status_code}: {response.text}")
 
     except (httpx.ProxyError, httpx.NetworkError, httpx.ConnectError, Exception) as e:
         console.print(f" Network error: {e}", style="red")
         logger.error(f"Network error: {e}")
+
+# -----------------------------------------------------------------
+
+
+async def find_user(args) -> None:
+    social_platforms = {
+        'Instagram': f'https://www.instagram.com/{args.username}',
+        'Telegram': f'https://t.me/{args.username}',
+        'X (Twitter)': f'https://x.com/{args.username}',
+        'Threads': f'https://www.threads.net/@{args.username}',
+        'YouTube': f'https://www.youtube.com/@{args.username}',
+        'GitHub': f'https://github.com/{args.username}',
+        'Reddit': f'https://www.reddit.com/user/{args.username}',
+        'Twitch': f'https://www.twitch.tv/{args.username}',
+        'Pinterest': f'https://in.pinterest.com/{args.username}/',
+        'Facebook': f'https://www.facebook.com/{args.username}',
+        'LinkedIn': f'https://www.linkedin.com/in/{args.username}',
+        'Medium': f'https://medium.com/@{args.username}',
+        'HuggingFace': f'https://huggingface.co/{args.username}',
+        'Kaggle': f'https://www.kaggle.com/{args.username}',
+        'Bluesky': f'https://bsky.app/profile/{args.username}.bsky.social',
+        'SoundCloud': f'https://soundcloud.com/{args.username}',
+        'Dev.to': f'https://dev.to/{args.username}',
+        'Product Hunt': f'https://www.producthunt.com/@{args.username}',
+        'TikTok': f'https://www.tiktok.com/@{args.username}',
+        'Behance': f'https://www.behance.net/{args.username}',
+        'Dribbble': f'https://dribbble.com/{args.username}',
+        'Replit': f'https://replit.com/@{args.username}',
+        'Steam': f'https://steamcommunity.com/id/{args.username}',
+        'BuyMeACoffee': f'https://www.buymeacoffee.com/{args.username}',
+        'Patreon': f'https://www.patreon.com/{args.username}',
+
+    }
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (compatible; Bot/1.0; +https://example.com/bot)"
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=10, headers=headers, follow_redirects=True) as client:
+            with console.status(f" [bold green]finding {args.username}...[/]", spinner="dots"):
+                        time.sleep(1)
+            for platform, url in social_platforms.items():
+                try:
+                    response = await client.get(url)
+
+                    # Platform-specific HTML keyword checks (basic)
+                    if platform == "Instagram":
+                        if "Page Not Found" in response.text or response.status_code == 404:
+                            print(f"❌ {platform}: Not found")
+                            continue
+                    elif platform == "GitHub":
+                        if "Not Found" in response.text or response.status_code == 404:
+                            print(f"❌ {platform}: Not found")
+                            continue
+                    elif response.status_code in [404, 410]:
+                        print(f"❌ {platform}: Not found")
+                        continue
+
+                    # If none of the above conditions matched, assume found
+                    print(f"✅ {platform}: Found - {url}")
+
+                except httpx.RequestError as req_err:
+                    logger.error(f"⚠️ {platform}: Request error - {req_err}")
+                    print(f"⚠️ {platform}: Request error - {req_err}")
+                except Exception as e:
+                    logger.error(f"{platform}: Error - {e}")
+                    print(f"❌ {platform}: Error - {e}")
+
+    except KeyboardInterrupt as e:
+        logger.error(e)

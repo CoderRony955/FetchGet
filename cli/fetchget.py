@@ -11,13 +11,13 @@ logging.basicConfig(level=logging.INFO,
 
 logger = logging.getLogger(__name__)
 
-about = '\033[3mA free and open-source tool that help you to gather information of your system utitlities and performing networking related tasks!\033[0m'
+about = '\033[3mA free and open-source tool that help you to gather information of your system utilities and performing networking related tasks!\033[0m'
 
 
 def main():
     parser = argparse.ArgumentParser(
         description=f"""\
-\033[1m\033[92mFetch\033[96mGet\033[0m 1.0\n\n{about}\n\n
+\033[1m\033[92mFetch\033[96mGet\033[0m 1.1\n\n{about}\n\n
 Available Commands:
     \033[92msysinfo                                      Get system information\033[0m
     \033[93mips                                          Get your public and private IPs\033[0m
@@ -49,10 +49,13 @@ Available Commands:
     
     \033[35mwhois     -hostname {{xyz.com}}                Perform WHOIS lookup on any domain / hostname\033[0m
     \033[36mhostip    -hostname {{xyz.com}}                See IPv4 address of any particular hostname\033[0m
-    \033[32mlookup    -domain {{xyz.com}}                  See all records including ('A (IPv4)', 'AAAA (IPv6)', 'NS (name servers)', 'SOA (metadata about domain)' etc.)  of any particular hostname / domain\033[0m
+    \033[32mdnslookup    -domain {{xyz.com}}               See all records including ('A (IPv4)', 'AAAA (IPv6)', 'NS (name servers)', 'SOA (metadata about domain)' etc.)  of any particular hostname / domain\033[0m
     
     \033[94mverify    -target {{domain, url}}              Check url, domain if it is suspicious or not\033[0m
-    \033[95mabuseip   -ip                                Check any IP if it is abusive or not (abusive means if any IP is responsible to perform malicious tasks on the internet then that IP is abusive)\033[0m
+    \033[95mabuseip   -ip {{target ip}}                    Check any IP if it is abusive or not (abusive means if any IP is responsible to perform malicious tasks on the internet then that IP is abusive)\033[0m
+    \033[93mping                                         Perform ping command on all public DNS servers just using single command\033[0m
+    \033[92mnetspeed                                     Use this command to check your internet speed, it will check and returns your internet \'Download speed\', \'Upload speed\' and \'How much ping your are getting\033[0m
+    \033[96mfind      -username {{target username}}        Perform username lookup on over 20+ social networks to find user\033[0m
     
     
         """,
@@ -228,7 +231,7 @@ Available Commands:
 
 
     parser_dns_lookup = subparsers.add_parser(
-        "lookup", help="See all records including ('A (IPv4)', 'AAAA (IPv6)', 'NS (name servers)', 'SOA (metadata about domain)' etc.)  of any particular hostname / domain")
+        "dnslookup", help="See all records including ('A (IPv4)', 'AAAA (IPv6)', 'NS (name servers)', 'SOA (metadata about domain)' etc.)  of any particular hostname / domain")
     parser_dns_lookup.add_argument(
         "-domain", help="Hostname / Domain to target", required=True)
     parser_dns_lookup.set_defaults(func=others.dns_lookup)
@@ -240,11 +243,29 @@ Available Commands:
         "-target", help="Domain, url to target", required=True)
     parser_verify.set_defaults(func=others.verify_url_)
     
+    
     parser_abuse_ip_check = subparsers.add_parser(
         "abuseip", help="Check any IP if it is abusive or not (abusive means if any IP is responsible to perform malicious tasks on the internet then that IP is abusive)")
     parser_abuse_ip_check.add_argument(
-        "-ip", help="ipl to target", required=True)
+        "-ip", help="ip to target", required=True)
     parser_abuse_ip_check.set_defaults(func=others.abuse_ip_check)
+    
+    
+    parser_ping_all = subparsers.add_parser(
+        "ping", help="Perform ping command on all public DNS servers just using single command")
+    parser_ping_all.set_defaults(func=sys_interface_funcs.pingg)
+    
+    
+    parser_check_internet_speed = subparsers.add_parser(
+        "netspeed", help="Use this command to check your internet speed, it will check and returns your internet \'Download speed\', \'Upload speed\' and \'How much ping your are getting\'")
+    parser_check_internet_speed.set_defaults(func=sys_interface_funcs.internet_speedtest)
+
+    parser_find_user = subparsers.add_parser(
+        "find", help="Perform username lookup on over 20+ social networks to find user")
+    parser_find_user.add_argument(
+        "-username", help="username to target", required=True)
+    parser_find_user.set_defaults(func=others.find_user)
+
 
     # Parse and call the appropriate function
     args = parser.parse_args()

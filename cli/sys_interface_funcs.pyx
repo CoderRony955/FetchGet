@@ -1,13 +1,16 @@
 import psutil
 import os
+from ping3 import ping
 import time
 import platform
 import socket
 import whois
+import speedtest
 from datetime import datetime
 from rich.console import Console
 import  requests
 import logging
+import statistics
 from rich.traceback import install
 from typing import Any
 
@@ -264,6 +267,68 @@ def host_ip(args) -> None:
 
 #-----------------------------------------------------------------
 
+def pingg(args) -> None:
+    cdef list hosts = [
+        '1.1.1.1',
+        '8.8.8.8',
+        '9.9.9.9',
+        '208.67.222.222',
+        '94.140.14.14',
+        '76.76.2.0',
+        '185.228.168.9',
+        '185.222.222.222'
+    ]
 
+    try:
+        samples = 5
+
+        for host in hosts:
+            delays = []
+            for i in range(samples):
+                delay = ping(host)
+                if delay is not None:
+                    delays.append(delay * 1000)  #
+                else:
+                    console.print(f"Ping {i+1} to {host} failed")
+
+            # Calculate and print average
+            if delays:
+                avg_ping = statistics.mean(delays)
+                console.print(
+                    f"\n✅ Average ping to {host} over {len(delays)} responses: {avg_ping:.2f} ms")
+                console.print(f"Minimum: {min(delays):.2f} ms, Maximum: {max(delays):.2f} ms")
+            else:
+                console.print(f"\n❌ All ping attempts to {host} failed.")
+    except Exception as e:
+        logger.info(e)
+    
+#-----------------------------------------------------------------
+
+def internet_speedtest(args) -> None:
+    console.print("Please wait a while because it just take some seconds to check :)")
+    st = speedtest.Speedtest()
+
+    # Get best server (based on ping)
+    st.get_best_server()
+
+    # Perform download and upload tests
+    download_speed = st.download()
+    upload_speed = st.upload()
+    ping_result = st.results.ping
+    
+
+    # Convert bits per second to Mbps
+    download_speed_mbps = download_speed / 1_000_000
+    upload_speed_mbps = upload_speed / 1_000_000
+    with console.status("[bold green]getting info...[/]", spinner="dots"):
+            time.sleep(2)
+
+    try:
+        console.print(f"Download Speed: {download_speed_mbps:.2f} Mbps")
+        console.print(f"Upload Speed: {upload_speed_mbps:.2f} Mbps")
+        console.print(f"Ping: {ping_result:.2f} ms") 
+    except (KeyboardInterrupt, speedtest.ConfigRetrievalError, speedtest.SpeedtestServersError, speedtest.ServersRetrievalError) as e:
+        console.print(f"An error occurred while running this command for more info please check logs ;-;", style="red")
+        logger.error(e)
 
 

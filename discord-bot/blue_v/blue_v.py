@@ -1,10 +1,14 @@
 import discord
 from discord.ext import commands
-import slash_cmds
+import asyncio
+from commands.delete_req import DELETE
+from commands.get_req import GET
+from commands.patch_req import PATCH
+from commands.put_req import PUT
+from commands.post_req import POST
 from dotenv import load_dotenv
 import logging
 import os
-import normal_cmds
 
 
 logging.basicConfig(level=logging.INFO,
@@ -28,14 +32,28 @@ async def on_ready():
     logger.info(f'Bot {bot.user.name} has connected to Discord!')
     await bot.tree.sync()
 
+# syncing all commands
+bot.add_command(GET)
+bot.add_command(POST)
+bot.add_command(PUT)
+bot.add_command(PATCH)
+bot.add_command(DELETE)
 
-bot.add_command(normal_cmds.GET)
-bot.add_command(normal_cmds.POST)
-bot.add_command(normal_cmds.PUT)
-bot.add_command(normal_cmds.PATCH)
-bot.add_command(normal_cmds.DELETE)
 
-slash_cmds.setup(bot)
+async def load_commands():
+    command_dir = os.path.join(os.path.dirname(__file__), "slash_commands")
+    for filename in os.listdir(command_dir):
+        if filename.endswith(".py") and filename != "__init__.py":
+            ext = f"slash_commands.{filename[:-3]}"
+            print(f"Loading: {ext}")
+            logger.info(f"Loading: {ext}")
+            await bot.load_extension(ext)
 
 bot_token = os.getenv('DISCORD_BOT_B')
-bot.run(bot_token)
+
+
+async def main():
+    await load_commands()
+    await bot.start(bot_token)
+
+asyncio.run(main())

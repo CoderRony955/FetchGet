@@ -1,0 +1,106 @@
+import discord
+from discord.ext import commands
+from discord import app_commands
+import logging
+import httpx
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+logging.basicConfig(level=logging.INFO,
+                    filename="log/discord_bots/discord_fetchget_y.log",
+                    format='%(asctime)s %(message)s',
+                    filemode='w')
+
+logger = logging.getLogger(__name__)
+
+
+intents = discord.Intents.default()
+intents.message_content = True  # Required to read messages
+
+bot = commands.Bot(command_prefix=';', intents=intents)
+
+
+class CheckAbusiveIPCog(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+
+    @app_commands.command(name='abuseip', description='Check any IP if it is abusive or not.')
+    async def check_abusive_ip(self, interaction: discord.Interaction, ip: str):
+        api_key = os.getenv('ABUSE_IPDB_APIKEY')
+        user = interaction.user
+
+        url = "https://api.abuseipdb.com/api/v2/check"
+        headers = {
+            "Accept": "application/json",
+            "Key": api_key
+        }
+        params = {
+            "ipAddress": ip,
+            "maxAgeInDays": 90
+        }
+
+        try:
+            await interaction.response.defer()
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, headers=headers, params=params)
+
+                if response.status_code == 200:
+                    data = response.json()["data"]
+
+                    embed = discord.Embed(
+                        title=f"AbuseIPDB Report for {ip}",
+                        color=discord.Color.green()
+                    )
+
+                    embed.add_field(name="IP Address", value=data.get(
+                        "ipAddress", "N/A"), inline=True)
+                    embed.add_field(
+                        name="Abuse Score", value=f"{data.get('abuseConfidenceScore', 'N/A')}%", inline=True)
+                    embed.add_field(name="Country", value=data.get(
+                        "countryCode", "N/A"), inline=True)
+                    embed.add_field(name="Domain", value=data.get(
+                        "domain", 'N/A') or "None", inline=True)
+                    embed.add_field(name="Is Tor", value=data.get(
+                        "isTor", 'N/A') or "None", inline=True)
+                    embed.add_field(name="ISP", value=data.get(
+                        "isp", "N/A"), inline=False)
+                    embed.add_field(name="Total Reports", value=data.get(
+                        "totalReports", "N/A"), inline=True)
+                    embed.add_field(name="Last Reported", value=data.get(
+                        "lastReportedAt", "Never"), inline=True)
+
+                    embed.set_footer(text=f"Requested by {user.name}",
+                                     icon_url=user.avatar.url if user.avatar else user.default_avatar.url)
+                    await interaction.followup.send(embed=embed)
+
+                else:
+                    embed = discord.Embed(
+                        title="Error fetching data from AbuseIPDB",
+                        description=f'**Status**: {response.status_code}\n**Response**: {response.text}',
+                        color=discord.Color.red()
+                    )
+                    embed.set_footer(
+                        text=f"Requested by {user.name}",
+                        icon_url=user.display_avatar.url
+                    )
+                    embed.set_footer(text=f"Requested by {user.name}",
+                                     icon_url=user.avatar.url if user.avatar else user.default_avatar.url)
+                    await interaction.followup.send(embed=embed)
+
+        except (httpx.ProxyError, httpx.NetworkError, httpx.ConnectError, Exception) as e:
+            logger.error(f"Error {e}")
+            embed = discord.Embed(
+                title="Error ;-;",
+                description=str(e),
+                color=discord.Color.red()
+            )
+            embed.set_footer(text=f"Requested by {user.name}",
+                             icon_url=user.avatar.url if user.avatar else user.default_avatar.url)
+            await interaction.followup.send(embed=embed)
+
+
+
+async def setup(bot: commands.Bot):
+    await bot.add_cog(CheckAbusiveIPCog(bot))
