@@ -1,5 +1,17 @@
-2025-06-19 14:52:12,903 PyNaCl is not installed, voice will NOT be supported
-2025-06-19 14:52:12,943 logging in using static token
-2025-06-19 14:52:14,899 Shard ID None has connected to Gateway (Session ID: f71193d9320b8c88cdc70ee91945b30f).
-2025-06-19 14:52:16,914 Bot FetchGet_Y has connected to Discord!
-2025-06-19 15:00:10,993 Shard ID None has successfully RESUMED session f71193d9320b8c88cdc70ee91945b30f.
+2025-06-26 13:13:39,693 PyNaCl is not installed, voice will NOT be supported
+2025-06-26 13:13:40,074 Loading: slash_commands.check_abusive_ip
+2025-06-26 13:13:40,083 Loading: slash_commands.delete
+2025-06-26 13:13:40,089 Loading: slash_commands.dns_lookup
+2025-06-26 13:13:40,097 Loading: slash_commands.get
+2025-06-26 13:13:40,107 Loading: slash_commands.help
+2025-06-26 13:13:40,118 Loading: slash_commands.ip_info
+2025-06-26 13:13:40,123 Loading: slash_commands.patch
+2025-06-26 13:13:40,128 Loading: slash_commands.post
+2025-06-26 13:13:40,140 Loading: slash_commands.public_dns_list
+2025-06-26 13:13:40,146 Loading: slash_commands.put
+2025-06-26 13:13:40,151 Loading: slash_commands.user_lookup
+2025-06-26 13:13:40,161 Loading: slash_commands.verify_url
+2025-06-26 13:13:40,168 Loading: slash_commands.whois_lookup
+2025-06-26 13:13:40,178 logging in using static token
+2025-06-26 13:13:42,501 Shard ID None has connected to Gateway (Session ID: 0435b71728dc797575d7d3130072c73e).
+2025-06-26 13:13:44,523 Bot Yep has connected to Discord!
