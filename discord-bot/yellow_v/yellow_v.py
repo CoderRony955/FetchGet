@@ -13,6 +13,7 @@ from commands.ip_info import ip_info
 from commands.check_abusive_ip import check_abusive_ip
 from commands.public_dns_list import dns_list
 from commands.user_lookup import find_user
+from commands.ping import ping
 from dotenv import load_dotenv
 import logging
 import os
@@ -52,6 +53,7 @@ bot.add_command(ip_info)
 bot.add_command(check_abusive_ip)
 bot.add_command(dns_list)
 bot.add_command(find_user)
+bot.add_command(ping)
 
 
 async def load_commands():
