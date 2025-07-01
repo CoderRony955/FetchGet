@@ -6,6 +6,7 @@ from commands.get_req import GET
 from commands.patch_req import PATCH
 from commands.put_req import PUT
 from commands.post_req import POST
+from commands.ping import ping
 from dotenv import load_dotenv
 import logging
 import os
@@ -38,6 +39,7 @@ bot.add_command(POST)
 bot.add_command(PUT)
 bot.add_command(PATCH)
 bot.add_command(DELETE)
+bot.add_command(ping)
 
 
 async def load_commands():
