@@ -1,17 +1,21 @@
-2025-06-26 13:13:39,693 PyNaCl is not installed, voice will NOT be supported
-2025-06-26 13:13:40,074 Loading: slash_commands.check_abusive_ip
-2025-06-26 13:13:40,083 Loading: slash_commands.delete
-2025-06-26 13:13:40,089 Loading: slash_commands.dns_lookup
-2025-06-26 13:13:40,097 Loading: slash_commands.get
-2025-06-26 13:13:40,107 Loading: slash_commands.help
-2025-06-26 13:13:40,118 Loading: slash_commands.ip_info
-2025-06-26 13:13:40,123 Loading: slash_commands.patch
-2025-06-26 13:13:40,128 Loading: slash_commands.post
-2025-06-26 13:13:40,140 Loading: slash_commands.public_dns_list
-2025-06-26 13:13:40,146 Loading: slash_commands.put
-2025-06-26 13:13:40,151 Loading: slash_commands.user_lookup
-2025-06-26 13:13:40,161 Loading: slash_commands.verify_url
-2025-06-26 13:13:40,168 Loading: slash_commands.whois_lookup
-2025-06-26 13:13:40,178 logging in using static token
-2025-06-26 13:13:42,501 Shard ID None has connected to Gateway (Session ID: 0435b71728dc797575d7d3130072c73e).
-2025-06-26 13:13:44,523 Bot Yep has connected to Discord!
+2025-07-30 14:57:32,397 PyNaCl is not installed, voice will NOT be supported
+2025-07-30 14:57:32,861 Loading: slash_commands.check_abusive_ip
+2025-07-30 14:57:32,871 Loading: slash_commands.delete
+2025-07-30 14:57:32,879 Loading: slash_commands.dns_lookup
+2025-07-30 14:57:32,889 Loading: slash_commands.get
+2025-07-30 14:57:32,910 Loading: slash_commands.help
+2025-07-30 14:57:32,915 Loading: slash_commands.ip_info
+2025-07-30 14:57:32,919 Loading: slash_commands.patch
+2025-07-30 14:57:32,930 Loading: slash_commands.ping
+2025-07-30 14:57:32,935 Loading: slash_commands.post
+2025-07-30 14:57:32,949 Loading: slash_commands.public_dns_list
+2025-07-30 14:57:32,955 Loading: slash_commands.put
+2025-07-30 14:57:32,963 Loading: slash_commands.user_lookup
+2025-07-30 14:57:32,975 Loading: slash_commands.verify_url
+2025-07-30 14:57:32,983 Loading: slash_commands.whois_lookup
+2025-07-30 14:57:32,996 logging in using static token
+2025-07-30 14:57:35,029 Shard ID None has connected to Gateway (Session ID: 6ba1208d927ec26b1f8bcdc0c3fadbde).
+2025-07-30 14:57:37,171 Bot FetchGet_Y has connected to Discord!
+2025-07-30 14:57:41,586 HTTP Request: GET https://httpbin.org/get "HTTP/1.1 200 OK"
+2025-07-30 14:59:04,970 HTTP Request: GET https://jsonplaceholder.typicode.com/todos/1 "HTTP/1.1 200 OK"
+2025-07-30 14:59:11,244 HTTP Request: GET https://jsonplaceholder.typicode.com/todos/1 "HTTP/1.1 200 OK"

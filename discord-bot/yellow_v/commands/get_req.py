@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import logging
 import httpx
 from dotenv import load_dotenv
+import re
+from urllib.parse import urlparse
 
 
 logging.basicConfig(level=logging.INFO,
@@ -27,6 +29,46 @@ async def GET(ctx: commands.Context, url: str):
     try:
         user = ctx.author
         async with httpx.AsyncClient() as client:
+
+            IP_REGEX = re.compile(
+                r"(?:\d{1,3}\.){3}\d{1,3}"         # IPv4
+                r"|"
+                r"\[[0-9a-fA-F:]+\]"               # IPv6 in brackets like [2001:db8::1]
+            )
+
+            def is_valid_url(URL: str) -> bool:
+                path = urlparse(url).path  # Get the URL path part
+                # Check if an IP address appears in the path
+                if IP_REGEX.search(path):
+                    return True
+                return False
+
+
+            blockedurls = [
+                "http://ip-api.com/json",
+                "https://ipapi.co/json/",
+                "https://ipapi.co/{IP}/json/",
+                "https://freeipapi.com/json/",
+                "http://ipwho.is/",
+                "https://api.hackertarget.com/geoip/?q={IP}",
+                "https://api.country.is/{IP}",
+                "https://get.geojs.io/v1/ip/geo.json"
+            ]
+
+            for urls in blockedurls:
+                if url in blockedurls or is_valid_url(URL=urls):
+                    embed = discord.Embed(
+                        title='Uhh ⚠️',
+                        description=f'URL {url} is not allowed to make request via **FetchGet Bot** for some security reasons!',
+                        color=discord.Color.yellow()
+                    )
+
+                    embed.set_footer(text=f"Requested by {user.name}",
+                                    icon_url=user.avatar.url if user.avatar else user.default_avatar.url)
+
+                    await ctx.send(embed=embed)
+                    return
+
             response = await client.get(url=url)
             if response.status_code != 200:
                 embed = discord.Embed(
