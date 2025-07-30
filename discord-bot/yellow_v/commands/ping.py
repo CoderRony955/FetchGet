@@ -21,4 +21,4 @@ bot = commands.Bot(command_prefix=';', intents=intents)
 @bot.command(name='ping')
 async def ping(ctx: commands.Context):
     latency = bot.latency  
-    await ctx.send(f'🏓 Pong! Latency: {latency * 1000:.2f}ms')
+    await ctx.send(f'Pong! Latency: {latency * 1000:.2f}ms')
